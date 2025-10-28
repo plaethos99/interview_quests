@@ -150,4 +150,3 @@
 
 ---
 
-Good luck! These questions should truly test the depth and breadth of your AWS knowledge.
