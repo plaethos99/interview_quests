@@ -139,3 +139,141 @@
 98. What is "idempotency" in the context of configuration management? Why is it a critical property for tools like Ansible, Puppet, and Chef?
 99. Design a solution for securely managing secrets (like database passwords or API keys) in an automated CI/CD pipeline. Compare and contrast using HashiCorp Vault with GitOps-style sealed secrets.
 100. Explain how to use `LD_PRELOAD` to intercept or override a function call in a dynamically linked library for debugging or testing purposes.
+
+
+
+
+
+
+
+
+
+---
+
+### **Category 1: Deep Kernel & Subsystem Internals (Questions 1-15)**
+
+1.  Explain the technology behind kernel live patching (e.g., `kpatch`, `kGraft`). What are the fundamental limitations and risks of applying a live patch to a production system?
+2.  Describe the Linux kernel's memory compaction and defragmentation process. Under what conditions would you see it being triggered, and how can you influence its behavior via `/proc/sys/vm/`?
+3.  What are `netfilter` hooks? Explain the order in which they are called for a packet traversing the `PREROUTING`, `FORWARD`, and `POSTROUTING` chains.
+4.  Explain the difference between `kprobes`, `kretprobes`, and `tracepoints`. When would you choose one over the other for building an eBPF-based monitoring tool?
+5.  Describe the `RCU` (Read-Copy-Update) mechanism in the kernel. Why is it critical for performance in highly concurrent systems, and what are its trade-offs?
+6.  What is `lockdep`? How would you use it to detect potential deadlocks in a kernel module or a device driver you are developing?
+7.  Explain the concept of `user namespaces`. What security benefits do they provide, and how do they enable a root user inside a container to be unprivileged on the host?
+8.  Describe the journey of a write operation from the `write()` system call to being physically written to disk on an `ext4` filesystem with journaling enabled.
+9.  How does the kernel's `tickless` (`NO_HZ`) feature work? What is its impact on power consumption and latency in virtualized environments?
+10. Explain the role of the `initramfs` (initial RAM filesystem). Describe the process of building a custom `initramfs` to unlock an encrypted LVM root partition at boot.
+11. What is `ftrace` and how does it differ from `perf`? Provide a scenario where `ftrace`'s function graph tracer would be the ideal tool to diagnose a kernel issue.
+12. Explain the difference between a `soft lockup` and a `hard lockup`. What kernel watchdog mechanisms are responsible for detecting them?
+13. How would you use `crash` utility to analyze a kernel `vmcore` file from a crashed system? What are the first commands you would run to get a high-level overview of the failure?
+14. Describe the `BPF` (Berkeley Packet Filter) Just-In-Time (JIT) compiler. What are its security implications, and how does it dramatically improve eBPF program performance?
+15. Explain the concept of `cgroup` controllers. Design a setup using the `pids` and `device` controllers to limit the number of processes and restrict access to specific devices for a set of containers.
+
+---
+
+### **Category 2: Advanced Cloud-Native Networking (Questions 16-30)**
+
+16. Compare and contrast the networking implementations of Cilium (eBPF-based) and Calico (BGP-based). What are the pros and cons of each for a large-scale Kubernetes cluster?
+17. Describe the data path of a request through a service mesh like Istio that uses an Envoy proxy sidecar. How are `iptables` rules used to "hijack" traffic to the sidecar?
+18. Explain the concept of `eBPF XDP` (eXpress Data Path). How can it be used to build a high-performance DDoS mitigation solution that operates before the kernel's network stack?
+19. What is `BGP Confederations` and `Route Reflectors`? Design a BGP topology for a data center that avoids a full-mesh of iBGP peers.
+20. Explain how DNS-based service discovery works in Kubernetes. Describe the entire resolution process from a pod inside one namespace querying a service in another namespace.
+21. What is `SR-IOV` (Single Root I/O Virtualization)? How does it provide near-native network performance for virtual machines or containers, and what are the management complexities?
+22. A pod cannot resolve an external DNS name (e.g., `google.com`) but can resolve internal Kubernetes services. Describe your systematic debugging process, starting from the pod's `/etc/resolv.conf` to the `CoreDNS` pods and their upstream configuration.
+23. Explain the `TCP Fast Open` (TFO) feature. What are the security considerations, and how would you enable it on a Linux server?
+24. What is `gRPC` and how does it use HTTP/2? From a networking perspective, what are the advantages of gRPC over traditional REST APIs for microservice communication?
+25. Describe the function of a Kubernetes `Ingress` vs. a `Gateway API` resource. What problems is the Gateway API trying to solve that traditional Ingress controllers cannot?
+26. How would you implement network policies in Kubernetes to enforce a "default deny" posture, only allowing pods in the same namespace to communicate with each other on a specific port?
+27. Explain the concept of `MACsec` (Media Access Control Security). In what scenario would you choose it over IPsec for securing network traffic?
+28. What is `Anycast`? Design a highly available DNS service using Anycast and explain how it routes clients to the geographically closest server.
+29. Describe the `conntrack` synchronization mechanisms required for an active-passive firewall pair using `keepalived` to maintain state during a failover.
+30. How does `Envoy Proxy` implement its load balancing algorithms (e.g., Round Robin, Least Request, Ring Hash)? Why is its implementation often more sophisticated than a simple L4 load balancer?
+
+---
+
+### **Category 3: Security, Compliance & Supply Chain (Questions 31-45)**
+
+31. Explain the SLSA (Supply-chain Levels for Software Artifacts) framework. How would you use tools like `Sigstore` (cosign, Rekor) to build a verifiable and tamper-resistant software supply chain?
+32. What is a "runtime security" tool? Describe how Falco uses eBPF or `sysdig` to detect anomalous activity within a running container or host.
+33. Explain the principle of "separation of duties" in a CI/CD pipeline. Design a GitOps workflow where the developer who merges code cannot approve its deployment to production.
+34. What is `mTLS` (mutual TLS)? Describe how you would automate the issuance and rotation of mTLS certificates for all services within a service mesh.
+35. A security audit flags that your servers are using weak cryptographic ciphers. How would you harden the `OpenSSH` and `OpenSSL` configurations on a fleet of servers using Ansible?
+36. Explain the concept of a "zero-knowledge proof" and provide a hypothetical use case for it in a Linux-based authentication system.
+37. What is `TPM 2.0`'s "remote attestation" feature? How can a cloud service use it to verify that a VM is booting into a trusted, unmodified state before providing it with secrets?
+38. Describe the process of creating and managing a private Certificate Authority (CA) using `cfssl` or `EJBCA` for internal services.
+39. What are the security implications of running Docker-in-Docker (DinD)? What are the safer alternatives for running a CI/CD pipeline that needs to build container images?
+40. Explain the concept of "policy as code." Compare and contrast Open Policy Agent (OPA) with Gatekeeper for enforcing policies on a Kubernetes cluster.
+41. How would you implement a "break-glass" procedure for emergency access that provides auditable, time-limited, and just-in-time privileged access to a production system?
+42. What is the purpose of `chattr` and `lsattr`? Provide an example of how you would use them to make a critical log file immutable, even to the root user.
+43. Describe the security model of `Wayland` versus `X11`. Why is Wayland considered more secure by design?
+44. How would you use `auditd` to create a real-time alerting pipeline that triggers a response in a SIEM system whenever a user adds a new `sudo` rule or SSH key?
+45. Explain the concept of "confidential computing." How do technologies like AMD SEV or Intel SGX create a trusted execution environment (TEE) on a Linux system?
+
+---
+
+### **Category 4: High-Availability & Disaster Recovery Architecture (Questions 46-60)**
+
+46. Design a multi-region active-active database architecture using PostgreSQL. What are the challenges of conflict resolution, and what tools (e.g., BDR, Patroni) would you use to manage it?
+47. Explain the difference between synchronous and asynchronous replication. For a financial application requiring zero data loss, which would you choose, and what are the performance trade-offs?
+48. What is a "split-brain" scenario in a high-availability cluster? Describe the mechanisms (e.g., quorum, fencing) used to prevent it.
+49. Design a disaster recovery plan for a stateless application running in Kubernetes across two cloud providers. Explain how you would manage DNS failover and data replication.
+50. Explain the Raft consensus algorithm. How does it compare to Paxos, and where is it implemented in modern distributed systems (e.g., etcd, RethinkDB)?
+51. What is the purpose of a `Pacemaker` and `Corosync` stack? Design a highly available NFS server using this stack.
+52. Describe the process of performing a full-point-in-time recovery of a MySQL database from a physical backup (e.g., Percona XtraBackup) combined with binary logs.
+53. How would you architect a globally distributed rate limiter to prevent API abuse across multiple data centers? What are the challenges of maintaining state?
+54. Explain the concept of "backpressure" in a distributed system. How can it be used to prevent cascading failures during a traffic surge?
+55. Design a backup strategy for a large `etcd` cluster. How would you automate and test the restore process to ensure it meets your RTO (Recovery Time Objective)?
+56. What is "Chaos Engineering"? Describe an experiment you would run on a microservices application to test its resilience to a database connection failure.
+57. Explain the difference between a "hot," "warm," and "cold" disaster recovery site. What are the cost and RTO/RPO implications of each?
+58. How would you implement a canary analysis system that automatically promotes or rolls back a deployment based on real-time metrics like error rate and latency?
+59. Design a highly available message queueing system using NATS JetStream. How does its streaming and persistence model compare to RabbitMQ or Kafka?
+60. Your primary data center has a complete power failure. Describe the automated steps your infrastructure should take to fail over to a secondary site, including DNS, load balancers, and application state.
+
+---
+
+### **Category 5: Performance, Observability & Profiling (Questions 61-75)**
+
+61. A Go application is showing high latency. How would you use `pprof` to profile its CPU and memory usage, and what would you look for in the generated graphs?
+62. Explain the difference between "whitebox" and "blackbox" monitoring. Give an example of a critical metric for each for a web application.
+63. How would you build a cost-effective, long-term metrics storage solution using Prometheus and a remote backend like Thanos or Cortex?
+64. Describe the OpenTelemetry project. How does it aim to unify the collection of logs, metrics, and traces, and how would you instrument an application to use it?
+65. A Java application is experiencing frequent "Stop-the-World" GC pauses. How would you use `jstat`, `jmap`, and `GC logs` to diagnose the issue and tune the garbage collector?
+66. What is "flame graph" visualization? How would you generate one from `perf` data to identify the most CPU-intensive functions in a complex application?
+67. Explain the concept of "service level indicators" (SLIs), "service level objectives" (SLOs), and "service level agreements" (SLAs). Design an SLO for API latency, including the error budget calculation.
+68. How can you use `eBPF` to trace a specific function within a running Node.js application without modifying its code or restarting it?
+69. Describe the architecture of a distributed tracing system like Jaeger. What are the roles of the collector, query service, and UI?
+70. You are seeing intermittent packet loss on a 10Gbps network interface. How would you use `ethtool -S`, `dropwatch`, and `perf` to determine if the issue is with the NIC driver, the kernel, or the application?
+71. Explain how to use `bpftrace` to write a one-liner that counts all `syscalls` by process name.
+72. What is "cardinality" in the context of metrics monitoring? Why is high cardinality a problem for Prometheus, and how can you mitigate it?
+73. How would you set up and interpret a "continuous profiling" solution to detect performance regressions in your applications automatically?
+74. A database server is slow, but CPU, memory, and I/O metrics are all normal. What advanced tools and techniques would you use to investigate potential lock contention or query plan regressions?
+75. Explain how `cAdvisor` integrates with the Kubernetes kubelet to provide container resource usage metrics. What are its limitations?
+
+---
+
+### **Category 6: Automation, Tooling & Platform Engineering (Questions 76-100)**
+
+76. Explain the GitOps operational model. How does it differ from traditional push-based CI/CD? Describe a potential "GitOps drift" scenario and how you would remediate it.
+77. What is the purpose of Terraform's `taint` and `import` commands? Provide a scenario for each.
+78. How would you write a custom Ansible filter plugin in Python to manipulate a complex data structure?
+79. Design an Internal Developer Platform (IDP) using tools like `Backstage`. What core components would you include to improve the developer experience?
+80. Explain the concept of a "Kubernetes Operator." Describe the control loop you would implement in a custom operator to manage the lifecycle of a third-party application.
+81. What is a `CSI` (Container Storage Interface) driver? Why is it a better abstraction than in-tree storage drivers in Kubernetes?
+82. How would you use `Packer` and `Terraform` to build a golden image for a virtual machine and then deploy a fleet of them in a repeatable and automated way?
+83. Describe the process of creating a custom Linux distribution for an embedded appliance using `Yocto Project` or `Buildroot`.
+84. What is `Docker BuildKit`? How does it improve upon the classic Docker build engine in terms of performance, concurrency, and security?
+85. Explain the difference between `helm template` and `helm install --dry-run`. When would you use each?
+86. How would you use `Kyverno` to enforce that all pods in a cluster must have resource limits and a specific set of labels?
+87. What is `Crossplane` and how does it aim to turn your Kubernetes cluster into a universal control plane for cloud infrastructure?
+88. Write a `systemd` unit file that runs a script 5 minutes after boot and then again every 24 hours.
+89. Explain the purpose of `OCI` (Open Container Initiative). What are the `runtime-spec` and `image-spec`?
+90. How would you manage secrets in a GitOps repository without storing them in plaintext? Describe a solution using Sealed Secrets or a tool like SOPS.
+91. What is the purpose of `jq`'s `@sh` and `@base64` functions? Provide a practical example for each.
+92. Describe how you would use `Vagrant` to create a local development environment that perfectly mirrors the production setup defined in your Ansible playbooks.
+93. Explain the concept of "IaC drift." How would you use a tool like `tfsec` or `checkov` to scan your Terraform code for security and compliance misconfigurations *before* applying it?
+94. What is a `Helm` chart hook? Describe a use case for a `post-install` hook.
+95. How would you build a multi-arch Docker image (e.g., for `amd64` and `arm64`) using `docker buildx`?
+96. Explain the role of a service catalog in an Internal Developer Platform. How does it help developers discover and consume self-service resources?
+97. What is the difference between `Argo CD` and `Flux` as GitOps operators for Kubernetes?
+98. How would you use `Terraform` to manage a Kubernetes cluster's resources, and what are the pros and cons of this approach compared to using a native Kubernetes tool like `Helm` or `Kustomize`?
+99. Design a CI/CD pipeline step that uses `Grype` or `Trivy` to scan a container image for vulnerabilities and fails the build if any critical vulnerabilities are found.
+100. Explain the concept of "progressive delivery." How does it extend beyond canary deployments to include feature flags and A/B testing?
