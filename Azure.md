@@ -149,4 +149,3 @@
 
 ---
 
-I hope these questions provide a rigorous challenge and a great way to test and deepen your Azure expertise. Good luck
